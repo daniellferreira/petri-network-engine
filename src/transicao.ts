@@ -1,5 +1,6 @@
 export class Transicao {
   id: number
+  status: boolean = false
 
   constructor(id: number) {
     this.id = id
@@ -7,5 +8,13 @@ export class Transicao {
 
   public getId(): number {
     return this.id
+  }
+
+  public getStatus(): boolean {
+    return this.status
+  }
+
+  public setStatus(status: boolean) {
+    this.status = status
   }
 }

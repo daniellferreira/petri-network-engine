@@ -18,8 +18,8 @@ export class Conexao {
     ehConexaoReset: boolean
   ) {
     this.lugar = lugar
-    this.peso = peso
     this.transicao = transicao
+    this.peso = peso
     this.ehEntrada = ehEntrada
     this.ehConexaoInibidora = ehConexaoInibidora
     this.ehConexaoReset = ehConexaoReset
@@ -33,14 +33,14 @@ export class Conexao {
     return this.transicao
   }
 
-  public validaEhEntrada(): boolean {
+  public getEhEntrada(): boolean {
     return this.ehEntrada
   }
-  public validaEhConexaoInibidora(): boolean {
+  public getEhConexaoInibidora(): boolean {
     return this.ehConexaoInibidora
   }
 
-  public validaEhConexaoReset(): boolean {
+  public getEhConexaoReset(): boolean {
     return this.ehConexaoReset
   }
 }

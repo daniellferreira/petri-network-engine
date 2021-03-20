@@ -5,8 +5,7 @@ export class Token {
     this.id = id
   }
 
-  // TODO: Find the solution to get the object.
-  public getId(id: number): number {
+  public getId(): number {
     return this.id
   }
 }
