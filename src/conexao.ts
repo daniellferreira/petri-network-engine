@@ -9,7 +9,6 @@ export class Conexao {
   ehConexaoInibidora: boolean
   ehConexaoReset: boolean
 
-  // TODO: Verificar a necessidade do id.
   constructor(
     lugar: Lugar,
     transicao: Transicao,
@@ -30,47 +29,18 @@ export class Conexao {
     return this.lugar
   }
 
-  public set Lugar(Lugar: undefined) {
-    this.Lugar = Lugar
+  public getTransicao(): Transicao {
+    return this.transicao
   }
 
-  public get Transicao(): undefined {
-    return this.Transicao
+  public validaEhEntrada(): boolean {
+    return this.ehEntrada
+  }
+  public validaEhConexaoInibidora(): boolean {
+    return this.ehConexaoInibidora
   }
 
-  public set Transicao(Transicao: undefined) {
-    this.Transicao = Transicao
-  }
-
-  public get number(): undefined {
-    return this.number
-  }
-
-  public set number(number: undefined) {
-    this.number = number
-  }
-
-  public get boolean(): undefined {
-    return this.boolean
-  }
-
-  public set boolean(boolean: undefined) {
-    this.boolean = boolean
-  }
-
-  public get boolean(): undefined {
-    return this.boolean
-  }
-
-  public set boolean(boolean: undefined) {
-    this.boolean = boolean
-  }
-
-  public get boolean(): undefined {
-    return this.boolean
-  }
-
-  public set boolean(boolean: undefined) {
-    this.boolean = boolean
+  public validaEhConexaoReset(): boolean {
+    return this.ehConexaoReset
   }
 }
