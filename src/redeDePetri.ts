@@ -194,17 +194,28 @@ export class RedePetri {
     // Verifica se o local tem marcas suficiente para ser executada
     for (let conexao of this.conexoes) {
       // TODO: verificar se eh entrada true ou false que fica o lugar com a marcacao
-      if (
-        conexao.getEhEntrada() == true &&
-        conexao.getLugar().getTokens() >= conexao.getPeso()
-      ) {
-        conexao.getTransicao().setStatus(true)
-      } else {
-        conexao.getTransicao().setStatus(false)
+      if (conexao.getEhEntrada() == true) { 
+        if (conexao.getLugar().getTokens() >= conexao.getPeso()) {
+          conexao.getTransicao().setStatus(true)
+        } else {
+          conexao.getTransicao().setStatus(false)
+        }
       }
     }
   }
   public executaCiclo() {
     this.verificaTransicoes()
+
+    // Move tokens de um lugar para o outro
+    for (let conexao of this.conexoes) {
+      if (conexao.getTransicao().getStatus() == true) {
+        if (conexao.getEhEntrada() == true) {
+          conexao.getLugar().removeToken(conexao.getPeso())
+        } else {
+          conexao.getLugar().insereToken(conexao.getPeso())
+        }
+      }
+    }
+
   }
 }

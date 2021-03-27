@@ -64,3 +64,7 @@ for (let i = 0; i < conexoes.length; i++) {
   )
   conexoes[i].setPeso(peso)
 }
+
+while (prompt("Executar ciclo? ('s' para executar) ") == "s") {
+  rede.executaCiclo()
+}
