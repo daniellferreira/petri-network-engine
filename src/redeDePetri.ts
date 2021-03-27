@@ -34,8 +34,9 @@ export class RedePetri {
   }
 
   // ##### METODOS TRANSICAO #####
-  public criarTransicao(id: number) {
+  public criaTransicao(id: number) {
     this.transicoes.push(new Transicao(id))
+    //console.log(this.transicoes[this.transicoes.length -1].toString())
   }
 
   public getTransicao(id: number): Transicao {
@@ -98,6 +99,7 @@ export class RedePetri {
         ehConexaoReset
       )
     )
+    console.log(this.conexoes[this.conexoes.length - 1].toString())
   }
 
   public removeConexao(lugar: Lugar, transicao: Transicao) {
@@ -154,6 +156,7 @@ export class RedePetri {
   // ##### METODOS TOKEN #####
   public insereTokenEmLugar(qtdTokens: number, lugar: Lugar) {
     lugar.insereToken(qtdTokens)
+    //console.log(lugar.toString())
   }
 
   public removeTokenDeLugar(qtdTokens: number, lugar: Lugar) {

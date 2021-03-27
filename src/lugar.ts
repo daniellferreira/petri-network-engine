@@ -32,4 +32,8 @@ export class Lugar {
   public getId(): number {
     return this.id
   }
+
+  public toString(): string {
+    return 'Lugar ' + this.getId() + ' possui ' + this.getTokens() + ' tokens' 
+  }
 }

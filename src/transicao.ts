@@ -17,4 +17,8 @@ export class Transicao {
   public setStatus(status: boolean) {
     this.status = status
   }
+  
+  public toString(): string {
+    return 'Transição ' + this.getId() + ' possui o status ' + this.getStatus()
+  }
 }
