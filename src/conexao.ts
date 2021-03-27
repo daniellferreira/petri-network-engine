@@ -43,4 +43,9 @@ export class Conexao {
   public getEhConexaoReset(): boolean {
     return this.ehConexaoReset
   }
+
+  public toString(): string {
+    return this.getLugar().toString() + ' ' + this.getTransicao().toString() +
+     ' eh entrada --> ' + this.getEhEntrada() + ' eh inibidora --> ' + this.getEhConexaoInibidora() + ' eh reset --> ' + this.getEhConexaoReset()
+  }
 }
