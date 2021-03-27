@@ -86,24 +86,26 @@ export class RedePetri {
 
   // ##### METODOS CONEXAO #####
   public criaConexao(
-    lugar: Lugar,
-    transicao: Transicao,
+    lugar: Lugar | null,
+    transicao: Transicao | null,
     peso: number,
     ehEntrada: boolean,
     ehConexaoInibidora: boolean,
     ehConexaoReset: boolean
   ) {
-    this.conexoes.push(
-      new Conexao(
-        lugar,
-        transicao,
-        peso,
-        ehEntrada,
-        ehConexaoInibidora,
-        ehConexaoReset
+    if (lugar && transicao) {
+      this.conexoes.push(
+        new Conexao(
+          lugar,
+          transicao,
+          peso,
+          ehEntrada,
+          ehConexaoInibidora,
+          ehConexaoReset
+        )
       )
-    )
-    console.log(this.conexoes[this.conexoes.length - 1].toString())
+      console.log(this.conexoes[this.conexoes.length - 1].toString())
+    }
   }
 
   public removeConexao(lugar: Lugar, transicao: Transicao) {
@@ -121,6 +123,10 @@ export class RedePetri {
         }
       }
     }
+  }
+
+  public getConexoes(): Array<Conexao> {
+    return this.conexoes
   }
 
   public getLugarDeConexao(conexao: Conexao): Lugar {
@@ -158,17 +164,17 @@ export class RedePetri {
   }
 
   // ##### METODOS TOKEN #####
-  public insereTokenEmLugar(qtdTokens: number, lugar: Lugar) {
-    lugar.insereToken(qtdTokens)
+  public insereTokenEmLugar(qtdTokens: number, lugar: Lugar | null) {
+    lugar?.insereToken(qtdTokens)
     //console.log(lugar.toString())
   }
 
-  public removeTokenDeLugar(qtdTokens: number, lugar: Lugar) {
-    lugar.removeToken(qtdTokens)
+  public removeTokenDeLugar(qtdTokens: number, lugar: Lugar | null) {
+    lugar?.removeToken(qtdTokens)
   }
 
-  public clearLugar(lugar: Lugar) {
-    lugar.clear()
+  public clearLugar(lugar: Lugar | null) {
+    lugar?.clear()
   }
 
   public getTokens(lugar: Lugar): number {
