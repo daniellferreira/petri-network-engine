@@ -33,6 +33,10 @@ export class Conexao {
     return this.transicao
   }
 
+  public getPeso(): number {
+    return this.peso
+  }
+
   public getEhEntrada(): boolean {
     return this.ehEntrada
   }

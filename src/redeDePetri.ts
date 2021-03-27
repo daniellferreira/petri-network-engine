@@ -13,14 +13,12 @@ export class RedePetri {
   }
 
   public getLugar(id: number): Lugar {
-    for (let lugar of this.lugares) {
-      if (lugar.getId() == id) {
-        return lugar
-      }
+    const lugar = this.lugares.filter((lugar: Lugar) => lugar.getId() === id)[0]
+    if(!lugar) {
+      console.log(`getLugar: Lugar com ID = ${id} nao existe`)
+      return null
     }
-    // ID nao existe
-    console.log(`getLugar: Lugar com ID ${id} nao existe`)
-    return null as any
+    return lugar
   }
 
   public removeLugar(id: number) {
@@ -39,16 +37,14 @@ export class RedePetri {
     //console.log(this.transicoes[this.transicoes.length -1].toString())
   }
 
-  public getTransicao(id: number): Transicao {
-    for (let transicao of this.transicoes) {
-      if (transicao.getId() == id) {
-        return transicao
-      }
+  public getTransicao(id: number): (Transicao) {
+    const transicao =  this.transicoes.filter((transicao: Transicao) => transicao.getId() === id)[0]
+    if(!transicao){
+      console.log(`getTransicao: Transicao com ID = ${id} nao existe`)
+      return null
     }
-    // ID nao existe
-    console.log(`getTransicao: Transicao com ID ${id} nao existe`)
-    return null as any
-  }
+    return transicao
+  } 
 
   public removeTransicao(id: number) {
     let transicao = this.getTransicao(id)
@@ -174,5 +170,22 @@ export class RedePetri {
   public quantosTokens(idLugar: number): number {
     let lugar = this.getLugar(idLugar)
     return lugar.getTokens()
+  }
+
+  // ##### METODOS CICLO #####
+  public verificaTransicoes() {
+    // Verifica se o local tem marcas suficiente para ser executada
+    for (let conexao of this.conexoes) {
+      // TODO: verificar se eh entrada true ou false que fica o lugar com a marcacao
+      if (conexao.getEhEntrada() == true && conexao.getLugar().getTokens() >= conexao.getPeso()) {
+        conexao.getTransicao().setStatus(true)
+      } else {
+        conexao.getTransicao().setStatus(false)
+      }
+    }
+  }
+  public executaCiclo() {
+    this.verificaTransicoes()
+    
   }
 }

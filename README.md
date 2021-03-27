@@ -1,17 +1,18 @@
-Infomrações sobre as classes:
+## Infomrações sobre as classes:
 
 lugar     = circulo
 conexao   = linha
 transicao = retangulo
 token     = marca
 
-    ## Pendente em metodos existentes ## 
-• Ao deletar transicao, deletar conexoes vinculadas a ele tambem
-• Ao deletar Lugar, deletar conexoes vinculadas a ele tambem
+Pendente em metodos existentes
+
+* Ao deletar transicao, deletar conexoes vinculadas a ele tambem
+* Ao deletar Lugar, deletar conexoes vinculadas a ele tambem
 
 
 
-    Criando/editando a geometria da rede
+## Criando/editando a geometria da rede
 [ok-void]• boolean criaLugar(int id) // id e’ a identificação do lugar ou transição
 [ok]• Lugar getLugar(int id)
 [ok-void]• boolean removeLugar(int id)
@@ -25,7 +26,7 @@ token     = marca
 [ok]• Conexao[] getConexoesEntrada(int id) // retorna array de conexões de entrada de uma transição
 [ok]• Conexao[] getConexoesSaida(int id) // retorna array de conexões de saida de uma transição
 
-    Alterando/inspecionando a rede
+## Alterando/inspecionando a rede
 [ok]• void insereTokenEmLugar(Token token, Lugar lugar)
 [ok-void]• boolean removeTokenDeLugar(Token token, Lugar lugar)
 [ok]• void clearLugar(Lugar lugar) // remove todos tokens do lugar
@@ -40,7 +41,7 @@ token     = marca
 • boolean salvaRede (String nomeArquivo)
 • Rede carregaRede (String nomeArquivo) métodos opcionais
 
-    Simulando/executando/conversando com o ambiente externo
+## Simulando/executando/conversando com o ambiente externo
 • void executaCiclo(), varre toda a rede, identificando todas transições habilitadas e executando cada uma
 destas transições habilitadas; a movimentação de tokens e o disparo de transições podem acarretar a chamada
 de métodos de callback para a camada de visualização/interação.
