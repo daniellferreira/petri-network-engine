@@ -1,13 +1,11 @@
 import { Conexao } from './conexao'
 import { Lugar } from './lugar'
-import { Token } from './token'
 import { Transicao } from './transicao'
 
 export class RedePetri {
   lugares: Array<Lugar> = []
   transicoes: Array<Transicao> = []
   conexoes: Array<Conexao> = []
-
 
   // ##### METODOS LUGAR #####
   public criarLugar(id: number) {
@@ -89,75 +87,89 @@ export class RedePetri {
     ehEntrada: boolean,
     ehConexaoInibidora: boolean,
     ehConexaoReset: boolean
-    ) {
-      this.conexoes.push(new Conexao(lugar, transicao, peso, ehEntrada, ehConexaoInibidora, ehConexaoReset))
-    }
+  ) {
+    this.conexoes.push(
+      new Conexao(
+        lugar,
+        transicao,
+        peso,
+        ehEntrada,
+        ehConexaoInibidora,
+        ehConexaoReset
+      )
+    )
+  }
 
-    public removeConexao(lugar: Lugar, transicao: Transicao) {
-      for (let conexao of this.conexoes) {
-        if (conexao.getLugar().getId() == lugar.getId() &&
-         conexao.getTransicao().getId() == transicao.getId()) {
-          let index = this.conexoes.indexOf(conexao)
-          if (index > -1) {
-            this.conexoes.splice(index, 1)
-          } else {
-            console.log(`removeConexao: Nao existe lugar com ID ${lugar.getId()} ou 
+  public removeConexao(lugar: Lugar, transicao: Transicao) {
+    for (let conexao of this.conexoes) {
+      if (
+        conexao.getLugar().getId() == lugar.getId() &&
+        conexao.getTransicao().getId() == transicao.getId()
+      ) {
+        let index = this.conexoes.indexOf(conexao)
+        if (index > -1) {
+          this.conexoes.splice(index, 1)
+        } else {
+          console.log(`removeConexao: Nao existe lugar com ID ${lugar.getId()} ou 
              transicao com ID ${transicao.getId()}`)
-          }
         }
       }
     }
-
-    public getLugarDeConexao(conexao: Conexao): Lugar {
-      return conexao.getLugar()
-    }
-
-    public getTransicaoDeConexao(conexao: Conexao): Transicao {
-      return conexao.getTransicao()
-    }
-
-    public getConexoesEntrada(idTransicao: number): Array<Conexao> {
-      let conexoesEntrada: Array<Conexao> = []
-      for (let conexao of this.conexoes) {  
-        if (conexao.getTransicao().getId() == idTransicao && conexao.getEhEntrada() == true) {
-            conexoesEntrada.push(conexao)
-          }
-        }
-      return conexoesEntrada
-    }
-
-    public getConexoesSaida(idTransicao: number): Array<Conexao> {
-      let conexoesSaida: Array<Conexao> = []
-      for (let conexao of this.conexoes) {  
-        if (conexao.getTransicao().getId() == idTransicao && conexao.getEhEntrada() == true) {
-          conexoesSaida.push(conexao)
-          }
-        }
-      return conexoesSaida
-    }
-
-  // ##### METODOS TOKEN #####
-  public insereTokenEmLugar(token: Token, lugar: Lugar) {
-    lugar.insereToken(token)
   }
 
-  public removeTokenDeLugar(token: Token, lugar: Lugar) {
-    lugar.removeToken(token)
+  public getLugarDeConexao(conexao: Conexao): Lugar {
+    return conexao.getLugar()
+  }
+
+  public getTransicaoDeConexao(conexao: Conexao): Transicao {
+    return conexao.getTransicao()
+  }
+
+  public getConexoesEntrada(idTransicao: number): Array<Conexao> {
+    let conexoesEntrada: Array<Conexao> = []
+    for (let conexao of this.conexoes) {
+      if (
+        conexao.getTransicao().getId() == idTransicao &&
+        conexao.getEhEntrada() == true
+      ) {
+        conexoesEntrada.push(conexao)
+      }
+    }
+    return conexoesEntrada
+  }
+
+  public getConexoesSaida(idTransicao: number): Array<Conexao> {
+    let conexoesSaida: Array<Conexao> = []
+    for (let conexao of this.conexoes) {
+      if (
+        conexao.getTransicao().getId() == idTransicao &&
+        conexao.getEhEntrada() == true
+      ) {
+        conexoesSaida.push(conexao)
+      }
+    }
+    return conexoesSaida
+  }
+
+  // ##### METODOS TOKEN #####
+  public insereTokenEmLugar(qtdTokens: number, lugar: Lugar) {
+    lugar.insereToken(qtdTokens)
+  }
+
+  public removeTokenDeLugar(qtdTokens: number, lugar: Lugar) {
+    lugar.removeToken(qtdTokens)
   }
 
   public clearLugar(lugar: Lugar) {
     lugar.clear()
   }
 
-  public getToken(lugar: Lugar): Array<Token> {
-    return lugar.getToken()
+  public getTokens(lugar: Lugar): number {
+    return lugar.getTokens()
   }
 
   public quantosTokens(idLugar: number): number {
     let lugar = this.getLugar(idLugar)
-    return lugar.getQtdTokens()
+    return lugar.getTokens()
   }
-
-  
-
 }

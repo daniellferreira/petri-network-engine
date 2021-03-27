@@ -1,41 +1,35 @@
-import { Token } from './token'
-
 export class Lugar {
   id: number
-  tokens: Array<Token>
+  tokens: number
 
   constructor(id: number) {
     this.id = id
-    this.tokens = []
+    this.tokens = 0
   }
 
-  public insereToken(token: Token) {
-    this.tokens.push(token)
+  public insereToken(qtdTokens: number) {
+    this.tokens += qtdTokens
   }
 
-  public removeToken(token: Token) {
-    let index = this.tokens.indexOf(token)
-    if (index > -1) {
-      this.tokens.splice(index, 1)
+  public removeToken(qtdTokens: number) {
+    if (this.tokens >= qtdTokens) {
+      this.tokens -= qtdTokens
     } else {
-      console.log(`removeToken: Token nao existe, no lugar com ID ${this.getId()}`)
+      console.log(
+        `removeToken: Quantidade de tokens é insuficiente , no lugar com ID ${this.getId()}`
+      )
     }
   }
 
   public clear() {
-    this.tokens = []
+    this.tokens = 0
   }
 
-  public getToken(): Array<Token> {
+  public getTokens(): number {
     return this.tokens
   }
 
   public getId(): number {
     return this.id
   }
-
-  public getQtdTokens(): number {
-    return this.tokens.length
-  }
-
 }
