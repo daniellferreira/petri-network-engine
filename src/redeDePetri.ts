@@ -8,7 +8,7 @@ export class RedePetri {
   conexoes: Array<Conexao> = []
 
   // ##### METODOS LUGAR #####
-  public criarLugar(id: number) {
+  public criaLugar(id: number) {
     this.lugares.push(new Lugar(id))
   }
 
@@ -34,7 +34,7 @@ export class RedePetri {
   }
 
   // ##### METODOS TRANSICAO #####
-  public criarTransicao(id: number) {
+  public criaTransicao(id: number) {
     this.transicoes.push(new Transicao(id))
   }
 
