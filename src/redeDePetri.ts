@@ -12,9 +12,9 @@ export class RedePetri {
     this.lugares.push(new Lugar(id))
   }
 
-  public getLugar(id: number): Lugar {
+  public getLugar(id: number): Lugar | null {
     const lugar = this.lugares.filter((lugar: Lugar) => lugar.getId() === id)[0]
-    if(!lugar) {
+    if (!lugar) {
       console.log(`getLugar: Lugar com ID = ${id} nao existe`)
       return null
     }
@@ -22,9 +22,9 @@ export class RedePetri {
   }
 
   public removeLugar(id: number) {
-    let lugar = this.getLugar(id)
-    let index = this.lugares.indexOf(lugar)
-    if (index > -1) {
+    const lugar = this.getLugar(id)
+    let index = lugar && this.lugares.indexOf(lugar)
+    if (index) {
       this.lugares.splice(index, 1)
     } else {
       console.log(`removeLugar: Lugar com ID ${id} nao existe`)
@@ -37,19 +37,21 @@ export class RedePetri {
     //console.log(this.transicoes[this.transicoes.length -1].toString())
   }
 
-  public getTransicao(id: number): (Transicao) {
-    const transicao =  this.transicoes.filter((transicao: Transicao) => transicao.getId() === id)[0]
-    if(!transicao){
+  public getTransicao(id: number): Transicao | null {
+    const transicao = this.transicoes.filter(
+      (transicao: Transicao) => transicao.getId() === id
+    )[0]
+    if (!transicao) {
       console.log(`getTransicao: Transicao com ID = ${id} nao existe`)
       return null
     }
     return transicao
-  } 
+  }
 
   public removeTransicao(id: number) {
-    let transicao = this.getTransicao(id)
-    let index = this.transicoes.indexOf(transicao)
-    if (index > -1) {
+    const transicao = this.getTransicao(id)
+    const index = transicao && this.transicoes.indexOf(transicao)
+    if (index) {
       this.transicoes.splice(index, 1)
     } else {
       console.log(`removeTransicao: Transicao com ID ${id} nao existe`)
@@ -57,45 +59,53 @@ export class RedePetri {
   }
 
   public getStatusTransicao(id: number): boolean {
-    let transicao = this.getTransicao(id)
-    return transicao.getStatus()
+    const transicao = this.getTransicao(id)
+    return transicao ? transicao.getStatus() : false
   }
 
   public setTransicaoInativa(id: number) {
-    let transicao = this.getTransicao(id)
-    transicao.setStatus(false)
+    const transicao = this.getTransicao(id)
+    if (!transicao) {
+      console.error('Transição não encontrada')
+    }
+    transicao?.setStatus(false)
   }
 
   public setTransicaoAtiva(id: number) {
-    let transicao = this.getTransicao(id)
-    transicao.setStatus(true)
+    const transicao = this.getTransicao(id)
+    if (!transicao) {
+      console.error('Transição não encontrada')
+    }
+    transicao?.setStatus(true)
   }
 
   public isTransicaoAtiva(id: number): boolean {
-    let transicao = this.getTransicao(id)
-    return transicao.getStatus()
+    const transicao = this.getTransicao(id)
+    return transicao?.getStatus() === true
   }
 
   // ##### METODOS CONEXAO #####
   public criaConexao(
-    lugar: Lugar,
-    transicao: Transicao,
+    lugar: Lugar | null,
+    transicao: Transicao | null,
     peso: number,
     ehEntrada: boolean,
     ehConexaoInibidora: boolean,
     ehConexaoReset: boolean
   ) {
-    this.conexoes.push(
-      new Conexao(
-        lugar,
-        transicao,
-        peso,
-        ehEntrada,
-        ehConexaoInibidora,
-        ehConexaoReset
+    if (lugar && transicao) {
+      this.conexoes.push(
+        new Conexao(
+          lugar,
+          transicao,
+          peso,
+          ehEntrada,
+          ehConexaoInibidora,
+          ehConexaoReset
+        )
       )
-    )
-    console.log(this.conexoes[this.conexoes.length - 1].toString())
+      console.log(this.conexoes[this.conexoes.length - 1].toString())
+    }
   }
 
   public removeConexao(lugar: Lugar, transicao: Transicao) {
@@ -115,6 +125,10 @@ export class RedePetri {
     }
   }
 
+  public getConexoes(): Array<Conexao> {
+    return this.conexoes
+  }
+
   public getLugarDeConexao(conexao: Conexao): Lugar {
     return conexao.getLugar()
   }
@@ -124,7 +138,7 @@ export class RedePetri {
   }
 
   public getConexoesEntrada(idTransicao: number): Array<Conexao> {
-    let conexoesEntrada: Array<Conexao> = []
+    const conexoesEntrada: Array<Conexao> = []
     for (let conexao of this.conexoes) {
       if (
         conexao.getTransicao().getId() == idTransicao &&
@@ -137,7 +151,7 @@ export class RedePetri {
   }
 
   public getConexoesSaida(idTransicao: number): Array<Conexao> {
-    let conexoesSaida: Array<Conexao> = []
+    const conexoesSaida: Array<Conexao> = []
     for (let conexao of this.conexoes) {
       if (
         conexao.getTransicao().getId() == idTransicao &&
@@ -150,26 +164,29 @@ export class RedePetri {
   }
 
   // ##### METODOS TOKEN #####
-  public insereTokenEmLugar(qtdTokens: number, lugar: Lugar) {
-    lugar.insereToken(qtdTokens)
+  public insereTokenEmLugar(qtdTokens: number, lugar: Lugar | null) {
+    lugar?.insereToken(qtdTokens)
     //console.log(lugar.toString())
   }
 
-  public removeTokenDeLugar(qtdTokens: number, lugar: Lugar) {
-    lugar.removeToken(qtdTokens)
+  public removeTokenDeLugar(qtdTokens: number, lugar: Lugar | null) {
+    lugar?.removeToken(qtdTokens)
   }
 
-  public clearLugar(lugar: Lugar) {
-    lugar.clear()
+  public clearLugar(lugar: Lugar | null) {
+    lugar?.clear()
   }
 
   public getTokens(lugar: Lugar): number {
     return lugar.getTokens()
   }
 
-  public quantosTokens(idLugar: number): number {
+  public quantosTokens(idLugar: number): number | undefined {
     let lugar = this.getLugar(idLugar)
-    return lugar.getTokens()
+    if (!lugar) {
+      console.error('Lugar não encontrado')
+    }
+    return lugar?.getTokens()
   }
 
   // ##### METODOS CICLO #####
@@ -177,7 +194,10 @@ export class RedePetri {
     // Verifica se o local tem marcas suficiente para ser executada
     for (let conexao of this.conexoes) {
       // TODO: verificar se eh entrada true ou false que fica o lugar com a marcacao
-      if (conexao.getEhEntrada() == true && conexao.getLugar().getTokens() >= conexao.getPeso()) {
+      if (
+        conexao.getEhEntrada() == true &&
+        conexao.getLugar().getTokens() >= conexao.getPeso()
+      ) {
         conexao.getTransicao().setStatus(true)
       } else {
         conexao.getTransicao().setStatus(false)
@@ -186,6 +206,5 @@ export class RedePetri {
   }
   public executaCiclo() {
     this.verificaTransicoes()
-    
   }
 }

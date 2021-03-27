@@ -37,6 +37,10 @@ export class Conexao {
     return this.peso
   }
 
+  public setPeso(novoPeso: number) {
+    this.peso = novoPeso
+  }
+
   public getEhEntrada(): boolean {
     return this.ehEntrada
   }
@@ -49,7 +53,16 @@ export class Conexao {
   }
 
   public toString(): string {
-    return this.getLugar().toString() + ' ' + this.getTransicao().toString() +
-     ' eh entrada --> ' + this.getEhEntrada() + ' eh inibidora --> ' + this.getEhConexaoInibidora() + ' eh reset --> ' + this.getEhConexaoReset()
+    return (
+      this.getLugar().toString() +
+      ' ' +
+      this.getTransicao().toString() +
+      ' eh entrada --> ' +
+      this.getEhEntrada() +
+      ' eh inibidora --> ' +
+      this.getEhConexaoInibidora() +
+      ' eh reset --> ' +
+      this.getEhConexaoReset()
+    )
   }
 }

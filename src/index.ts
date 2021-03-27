@@ -49,3 +49,18 @@ for (let i = 1; i <= qtdLugares; i++) {
 
   rede.insereTokenEmLugar(qtdTokens, rede.getLugar(i))
 }
+
+const conexoes = rede.getConexoes()
+
+// ver pesos pra cada conexao
+for (let i = 0; i < conexoes.length; i++) {
+  const lugarConexao = rede.getLugarDeConexao(conexoes[i])
+  const transicaoConexao = rede.getTransicaoDeConexao(conexoes[i])
+
+  const peso: number = Number(
+    prompt(
+      `Qual o peso do arco de L${lugarConexao.id} para T${transicaoConexao.id}? `
+    )
+  )
+  conexoes[i].setPeso(peso)
+}
