@@ -1,3 +1,5 @@
+import Table from 'cli-table'
+
 import { Conexao } from './conexao'
 import { Lugar } from './lugar'
 import { Transicao } from './transicao'
@@ -6,6 +8,8 @@ export class RedePetri {
   lugares: Array<Lugar> = []
   transicoes: Array<Transicao> = []
   conexoes: Array<Conexao> = []
+  log: Array<Array<string>> = []
+  numCicloExecutados: number = 0
 
   // ##### METODOS LUGAR #####
   public criaLugar(id: number) {
@@ -194,7 +198,7 @@ export class RedePetri {
     // Verifica se o local tem marcas suficiente para ser executada
     for (let conexao of this.conexoes) {
       // TODO: verificar se eh entrada true ou false que fica o lugar com a marcacao
-      if (conexao.getEhEntrada() == true) { 
+      if (conexao.getEhEntrada() == true) {
         if (conexao.getLugar().getTokens() >= conexao.getPeso()) {
           conexao.getTransicao().setStatus(true)
         } else {
@@ -217,5 +221,65 @@ export class RedePetri {
       }
     }
 
+    this.registraLog(++this.numCicloExecutados)
+  }
+
+  // ##### METODOS DE LOG #####
+  private getSituacaoRede() {
+    return [
+      ...this.lugares.map((lugar) => lugar.getTokens().toString()),
+      ...this.transicoes.map(
+        (transicao) => `${transicao.getStatus() ? 'S' : 'N'}`
+      ),
+    ]
+  }
+  public registrarLogInicial() {
+    this.log.push([
+      'Núm. do ciclo',
+      ...this.lugares.map((lugar) => `L${lugar.getId()}`),
+      ...this.transicoes.map((transicao) => `T${transicao.getId()}`),
+    ])
+
+    this.registraLog('0 (inicial)')
+  }
+  public registraLog(label: string | number) {
+    this.log.push([label.toString(), ...this.getSituacaoRede()])
+  }
+
+  // ##### METODOS EXIBIÇÃO #####
+  public exibeLugares() {
+    const lugares: any[] = ['Lugar']
+    const marcacoes: any[] = ['Marcação']
+
+    for (const lugar of this.lugares) {
+      lugares.push(lugar.getId())
+      marcacoes.push(lugar.getTokens())
+    }
+
+    const table = new Table()
+    table.push(lugares)
+    table.push(marcacoes)
+
+    console.log(table.toString())
+  }
+  public exibeTransicoes() {
+    const transicoes: any[] = ['Transição']
+    const habilitadas: any[] = ['Habilitada ?']
+
+    for (const transicao of this.transicoes) {
+      transicoes.push(transicao.getId())
+      habilitadas.push(transicao.getStatus() ? 'S' : 'N')
+    }
+
+    const table = new Table()
+    table.push(transicoes)
+    table.push(habilitadas)
+
+    console.log(table.toString())
+  }
+  public exibeRede() {
+    const table = new Table()
+    table.push(...this.log)
+    console.log(table.toString())
   }
 }
