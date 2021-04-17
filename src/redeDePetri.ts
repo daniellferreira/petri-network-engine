@@ -235,7 +235,7 @@ export class RedePetri {
     }
 
     const transicoesEmbaralhadas = this.embaralhaTransicoes([
-      ...transicoesAtivas,
+      ...this.transicoes,
     ])
 
     // Move tokens de um lugar para o outro
