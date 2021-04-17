@@ -15,6 +15,10 @@ for (let i = 1; i <= qtdLugares; i++) {
 
 const qtdTransicoes: number = Number(prompt('Quantas transições: '))
 
+const lugaresReset: string = prompt(`Quais são os lugares com reset? `)
+const lugaresComReset = lugaresReset.split(',')
+
+let reset = false
 // instancia todas as transicoes pra cada lugar
 for (let i = 1; i <= qtdTransicoes; i++) {
   const lugarEntradaTransicao: string = prompt(
@@ -25,13 +29,19 @@ for (let i = 1; i <= qtdTransicoes; i++) {
   rede.criaTransicao(i)
 
   for (let entrada of lugarEntrada) {
+    if (lugaresComReset.indexOf(entrada) != -1) {
+      reset = true
+    } else {
+      reset = false
+    }
+
     rede.criaConexao(
       rede.getLugar(Number(entrada)),
       rede.getTransicao(i),
       1,
       true,
       false,
-      false
+      reset
     ) //conecta lugar de entrada
   }
 

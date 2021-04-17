@@ -243,7 +243,11 @@ export class RedePetri {
       }
 
       for (let conexao of transicao.getConexoesEntrada()) {
-        conexao.getLugar().removeToken(conexao.getPeso())
+        if (conexao.getEhConexaoReset()) {
+          conexao.getLugar().clear()
+        } else {
+          conexao.getLugar().removeToken(conexao.getPeso())
+        }
       }
       for (let conexao of transicao.getConexoesSaida()) {
         conexao.getLugar().insereToken(conexao.getPeso())
