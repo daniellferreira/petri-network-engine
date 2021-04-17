@@ -24,24 +24,32 @@ for (let i = 1; i <= qtdTransicoes; i++) {
   const lugarEntradaTransicao: string = prompt(
     `Quais são os lugares de entrada de T${i}? `
   )
-  const lugarEntrada = lugarEntradaTransicao.split(',')
+  const lugaresEntrada = lugarEntradaTransicao.split(',')
+
+  const lugaresComConexaoInibidora: string = prompt(
+    `Quais são os lugares de entrada de T${i} com conexão inibidora? `
+  )
+  const lugaresConexaoInibidora = lugaresComConexaoInibidora.split(',')
+
+  const lugaresComConexaoReset: string = prompt(
+    `Quais são os lugares de entrada de T${i} com conexão reset? `
+  )
+  const lugaresConexaoReset = lugaresComConexaoReset.split(',')
 
   rede.criaTransicao(i)
 
-  for (let entrada of lugarEntrada) {
-    if (lugaresComReset.indexOf(entrada) != -1) {
-      reset = true
-    } else {
-      reset = false
-    }
-
+  for (let entrada of lugaresEntrada) {
+    const ehInibidora = !!lugaresConexaoInibidora.find(
+      (elem) => elem === entrada
+    )
+    const ehReset = !!lugaresConexaoReset.find((elem) => elem === entrada)
     rede.criaConexao(
       rede.getLugar(Number(entrada)),
       rede.getTransicao(i),
       1,
       true,
-      false,
-      reset
+      ehInibidora,
+      ehReset
     ) //conecta lugar de entrada
   }
 
