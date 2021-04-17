@@ -218,6 +218,17 @@ export class RedePetri {
   }
 
   public executaCiclo() {
+    const transicoesAtivas = this.transicoes.filter(
+      (transicao) => transicao.status
+    )
+
+    if (transicoesAtivas.length < 1) {
+      console.log(
+        'Não é possível executar um ciclo, pois nenhuma transição está ativa'
+      )
+      return
+    }
+
     this.verificaTransicoes()
 
     // Move tokens de um lugar para o outro
