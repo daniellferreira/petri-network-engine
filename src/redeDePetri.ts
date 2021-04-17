@@ -190,7 +190,6 @@ export class RedePetri {
   // ##### METODOS TOKEN #####
   public insereTokenEmLugar(qtdTokens: number, lugar: Lugar | null) {
     lugar?.insereToken(qtdTokens)
-    //console.log(lugar.toString())
   }
 
   public removeTokenDeLugar(qtdTokens: number, lugar: Lugar | null) {
@@ -222,7 +221,12 @@ export class RedePetri {
     //verificar para cada transicao quais sao os lugares associados e se o token do lugar é suficiente para a conexão
     for (let transicao of transicoes) {
       for (let conexao of transicao.getConexoesEntrada()) {
-        if (conexao.getLugar().getTokens() >= conexao.getPeso()) {
+        if (
+          (!conexao.getEhConexaoInibidora() &&
+            conexao.getLugar().getTokens() >= conexao.getPeso()) ||
+          (conexao.getEhConexaoInibidora() &&
+            conexao.getLugar().getTokens() < conexao.getPeso())
+        ) {
           conexao.getTransicao().setStatus(true)
         } else {
           conexao.getTransicao().setStatus(false)
@@ -255,7 +259,11 @@ export class RedePetri {
       }
 
       for (let conexao of transicao.getConexoesEntrada()) {
-        conexao.getLugar().removeToken(conexao.getPeso())
+        if (conexao.getEhConexaoReset()) {
+          conexao.getLugar().clear()
+        } else {
+          conexao.getLugar().removeToken(conexao.getPeso())
+        }
       }
       for (let conexao of transicao.getConexoesSaida()) {
         conexao.getLugar().insereToken(conexao.getPeso())

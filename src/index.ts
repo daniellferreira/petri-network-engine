@@ -1,6 +1,6 @@
 import { RedePetri } from './redeDePetri'
 
-console.log('Bem vindo à Rede de Petris em TypeScript! :)')
+console.log('Bem vindo à Rede de Petri em TypeScript! :)')
 
 const rede = new RedePetri()
 
@@ -20,18 +20,32 @@ for (let i = 1; i <= qtdTransicoes; i++) {
   const lugarEntradaTransicao: string = prompt(
     `Quais são os lugares de entrada de T${i}? `
   )
-  const lugarEntrada = lugarEntradaTransicao.split(',')
+  const lugaresEntrada = lugarEntradaTransicao.split(',')
+
+  const lugaresComConexaoInibidora: string = prompt(
+    `Quais são os lugares de entrada de T${i} com conexão inibidora? `
+  )
+  const lugaresConexaoInibidora = lugaresComConexaoInibidora.split(',')
+
+  const lugaresComConexaoReset: string = prompt(
+    `Quais são os lugares de entrada de T${i} com conexão reset? `
+  )
+  const lugaresConexaoReset = lugaresComConexaoReset.split(',')
 
   rede.criaTransicao(i)
 
-  for (let entrada of lugarEntrada) {
+  for (let entrada of lugaresEntrada) {
+    const ehInibidora = !!lugaresConexaoInibidora.find(
+      (elem) => elem === entrada
+    )
+    const ehReset = !!lugaresConexaoReset.find((elem) => elem === entrada)
     rede.criaConexao(
       rede.getLugar(Number(entrada)),
       rede.getTransicao(i),
       1,
       true,
-      false,
-      false
+      ehInibidora,
+      ehReset
     ) //conecta lugar de entrada
   }
 
@@ -91,6 +105,7 @@ while (true) {
   switch (option) {
     case '1':
       rede.executaCiclo()
+      rede.exibeRede()
       break
     case '2':
       rede.exibeLugares()
