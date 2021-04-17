@@ -1,26 +1,28 @@
 export class Lugar {
   id: number
   tokens: number
+  label: string
 
-  constructor(id: number) {
+  constructor(id: number, label: string, tokens: number = 0) {
     this.id = id
-    this.tokens = 0
+    this.tokens = tokens
+    this.label = label
   }
 
   public insereToken(qtdTokens: number) {
     this.tokens += qtdTokens
     // TODO: remover console.log, usado temporariamente
-    console.log(`Adicionado ${qtdTokens} token(s) do L${this.getId()}`)
+    console.log(`Adicionado ${qtdTokens} token(s) do ${this.getLabel()}`)
   }
 
   public removeToken(qtdTokens: number) {
     if (this.tokens >= qtdTokens) {
       this.tokens -= qtdTokens
       // TODO: remover console.log, usado temporariamente
-      console.log(`Removido ${qtdTokens} token(s) do L${this.getId()}`)
+      console.log(`Removido ${qtdTokens} token(s) do ${this.getLabel()}`)
     } else {
       console.log(
-        `removeToken: Quantidade de tokens é insuficiente , no L${this.getId()}`
+        `removeToken: Quantidade de tokens é insuficiente , no ${this.getLabel()}`
       )
     }
   }
@@ -37,7 +39,13 @@ export class Lugar {
     return this.id
   }
 
+  public getLabel(): string {
+    return this.label
+  }
+
   public toString(): string {
-    return 'Lugar ' + this.getId() + ' possui ' + this.getTokens() + ' tokens'
+    return (
+      'Lugar ' + this.getLabel() + ' possui ' + this.getTokens() + ' tokens'
+    )
   }
 }

@@ -12,8 +12,14 @@ export class RedePetri {
   numCicloExecutados: number = 0
 
   // ##### METODOS LUGAR #####
-  public criaLugar(id: number) {
-    this.lugares.push(new Lugar(id))
+  public criaLugar(
+    id: number,
+    label: string = `L${id.toString()}`,
+    tokens: number = 0
+  ): Lugar {
+    const lugar = new Lugar(id, label, tokens)
+    this.lugares.push(lugar)
+    return lugar
   }
 
   public getLugar(id: number): Lugar | null {
@@ -36,9 +42,13 @@ export class RedePetri {
   }
 
   // ##### METODOS TRANSICAO #####
-  public criaTransicao(id: number) {
-    this.transicoes.push(new Transicao(id))
-    //console.log(this.transicoes[this.transicoes.length -1].toString())
+  public criaTransicao(
+    id: number,
+    label: string = `T${id.toString()}`
+  ): Transicao {
+    const transicao = new Transicao(id, label)
+    this.transicoes.push(transicao)
+    return transicao
   }
 
   public getTransicao(id: number): Transicao | null {
@@ -254,6 +264,8 @@ export class RedePetri {
       this.atualizaStatusTransicoes(transicoesEmbaralhadas)
     }
 
+    this.atualizaStatusTransicoes()
+
     this.registraLog(++this.numCicloExecutados)
   }
 
@@ -269,8 +281,8 @@ export class RedePetri {
   public registrarLogInicial() {
     this.log.push([
       'Núm. do ciclo',
-      ...this.lugares.map((lugar) => `L${lugar.getId()}`),
-      ...this.transicoes.map((transicao) => `T${transicao.getId()}`),
+      ...this.lugares.map((lugar) => `${lugar.getLabel()}`),
+      ...this.transicoes.map((transicao) => `${transicao.getLabel()}`),
     ])
 
     this.registraLog('0 (inicial)')
@@ -285,7 +297,7 @@ export class RedePetri {
     const marcacoes: any[] = ['Marcação']
 
     for (const lugar of this.lugares) {
-      lugares.push(lugar.getId())
+      lugares.push(lugar.getLabel())
       marcacoes.push(lugar.getTokens())
     }
 
@@ -300,7 +312,7 @@ export class RedePetri {
     const habilitadas: any[] = ['Habilitada ?']
 
     for (const transicao of this.transicoes) {
-      transicoes.push(transicao.getId())
+      transicoes.push(transicao.getLabel())
       habilitadas.push(transicao.getStatus() ? 'S' : 'N')
     }
 

@@ -12,6 +12,15 @@
       "skipFiles": ["<node_internals>/**"],
       "type": "node",
       "console": "integratedTerminal"
+    },
+    {
+      "name": "Debug test 1",
+      "request": "launch",
+      "runtimeArgs": ["run", "test"],
+      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "console": "integratedTerminal"
     }
   ]
 }

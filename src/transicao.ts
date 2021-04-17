@@ -1,17 +1,23 @@
-import { Conexao } from "./conexao"
+import { Conexao } from './conexao'
 
 export class Transicao {
   id: number
+  label: string
   status: boolean = false
   conexoesEntrada: Array<Conexao> = []
   conexoesSaida: Array<Conexao> = []
 
-  constructor(id: number) {
+  constructor(id: number, label: string) {
     this.id = id
+    this.label = label
   }
 
   public getId(): number {
     return this.id
+  }
+
+  public getLabel(): string {
+    return this.label
   }
 
   public getStatus(): boolean {
@@ -36,12 +42,12 @@ export class Transicao {
 
   public removeConexaoEntrada(conexao: Conexao): void {
     let index = this.conexoesEntrada.indexOf(conexao)
-        if (index > -1) {
-          this.conexoesEntrada.splice(index, 1)
-        } else {
-          console.log(`removeConexaoDaTransicao: Nao existe conexao solicitada na 
-             transicao com ID ${this.getId()}`)
-        }
+    if (index > -1) {
+      this.conexoesEntrada.splice(index, 1)
+    } else {
+      console.log(`removeConexaoDaTransicao: Nao existe conexao solicitada na 
+             transicao ${this.getId()}`)
+    }
   }
 
   public addConexaoSaida(conexao: Conexao): void {
@@ -50,15 +56,17 @@ export class Transicao {
 
   public removeConexaoSaida(conexao: Conexao): void {
     let index = this.conexoesSaida.indexOf(conexao)
-        if (index > -1) {
-          this.conexoesSaida.splice(index, 1)
-        } else {
-          console.log(`removeConexaoDaTransicao: Nao existe conexao solicitada na 
-             transicao com ID ${this.getId()}`)
-        }
+    if (index > -1) {
+      this.conexoesSaida.splice(index, 1)
+    } else {
+      console.log(`removeConexaoDaTransicao: Nao existe conexao solicitada na 
+             transicao ${this.getLabel()}`)
+    }
   }
-   
+
   public toString(): string {
-    return 'Transição ' + this.getId() + ' possui o status ' + this.getStatus()
+    return (
+      'Transição ' + this.getLabel() + ' possui o status ' + this.getStatus()
+    )
   }
 }
