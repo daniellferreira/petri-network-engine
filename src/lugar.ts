@@ -10,17 +10,17 @@ export class Lugar {
   public insereToken(qtdTokens: number) {
     this.tokens += qtdTokens
     // TODO: remover console.log, usado temporariamente
-    console.log(`Adicionado ${qtdTokens} token(s) do local com ID ${this.getId()}`)
+    console.log(`Adicionado ${qtdTokens} token(s) do L${this.getId()}`)
   }
 
   public removeToken(qtdTokens: number) {
     if (this.tokens >= qtdTokens) {
       this.tokens -= qtdTokens
       // TODO: remover console.log, usado temporariamente
-      console.log(`Removido ${qtdTokens} token(s) do local com ID ${this.getId()}`)
+      console.log(`Removido ${qtdTokens} token(s) do L${this.getId()}`)
     } else {
       console.log(
-        `removeToken: Quantidade de tokens é insuficiente , no lugar com ID ${this.getId()}`
+        `removeToken: Quantidade de tokens é insuficiente , no L${this.getId()}`
       )
     }
   }
@@ -38,6 +38,6 @@ export class Lugar {
   }
 
   public toString(): string {
-    return 'Lugar ' + this.getId() + ' possui ' + this.getTokens() + ' tokens' 
+    return 'Lugar ' + this.getId() + ' possui ' + this.getTokens() + ' tokens'
   }
 }

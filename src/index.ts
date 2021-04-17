@@ -23,7 +23,7 @@ for (let i = 1; i <= qtdTransicoes; i++) {
   const lugarEntrada = lugarEntradaTransicao.split(',')
 
   rede.criaTransicao(i)
-  
+
   for (let entrada of lugarEntrada) {
     rede.criaConexao(
       rede.getLugar(Number(entrada)),
@@ -74,7 +74,7 @@ for (let i = 0; i < conexoes.length; i++) {
   conexoes[i].setPeso(peso)
 }
 
-rede.verificaTransicoes()
+rede.atualizaStatusTransicoes()
 rede.registrarLogInicial()
 
 while (true) {

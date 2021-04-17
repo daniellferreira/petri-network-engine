@@ -203,9 +203,14 @@ export class RedePetri {
     return lugar?.getTokens()
   }
 
+  private embaralhaTransicoes(arr: Transicao[]) {
+    return arr.sort(() => Math.random() - 0.5)
+  }
+
   // ##### METODOS CICLO #####
-  public verificaTransicoes() {
-    for (let transicao of this.transicoes) {
+  public atualizaStatusTransicoes(transicoes: Transicao[] = this.transicoes) {
+    //verificar para cada transicao quais sao os lugares associados e se o token do lugar é suficiente para a conexão
+    for (let transicao of transicoes) {
       for (let conexao of transicao.getConexoesEntrada()) {
         if (conexao.getLugar().getTokens() >= conexao.getPeso()) {
           conexao.getTransicao().setStatus(true)
@@ -229,24 +234,24 @@ export class RedePetri {
       return
     }
 
-    this.verificaTransicoes()
+    const transicoesEmbaralhadas = this.embaralhaTransicoes([
+      ...transicoesAtivas,
+    ])
 
     // Move tokens de um lugar para o outro
-    for (let transicao of this.transicoes) {
-      for (let conexao of transicao.getConexoesEntrada()) {
-        if (transicao.getStatus() == true) {
-          conexao.getLugar().removeToken(conexao.getPeso())
-        }
-      }
-      for (let conexao of transicao.getConexoesSaida()) {
-        if (transicao.getStatus() == true) {
-          conexao.getLugar().insereToken(conexao.getPeso())
-        }
+    for (let transicao of transicoesEmbaralhadas) {
+      if (!transicao.getStatus()) {
+        continue
       }
 
-      if (transicao.getStatus() == true) {
-        this.verificaTransicoes()
+      for (let conexao of transicao.getConexoesEntrada()) {
+        conexao.getLugar().removeToken(conexao.getPeso())
       }
+      for (let conexao of transicao.getConexoesSaida()) {
+        conexao.getLugar().insereToken(conexao.getPeso())
+      }
+
+      this.atualizaStatusTransicoes(transicoesEmbaralhadas)
     }
 
     this.registraLog(++this.numCicloExecutados)
