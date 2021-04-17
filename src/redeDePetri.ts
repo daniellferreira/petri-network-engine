@@ -38,7 +38,6 @@ export class RedePetri {
   // ##### METODOS TRANSICAO #####
   public criaTransicao(id: number) {
     this.transicoes.push(new Transicao(id))
-    //console.log(this.transicoes[this.transicoes.length -1].toString())
   }
 
   public getTransicao(id: number): Transicao | null {
@@ -180,7 +179,6 @@ export class RedePetri {
   // ##### METODOS TOKEN #####
   public insereTokenEmLugar(qtdTokens: number, lugar: Lugar | null) {
     lugar?.insereToken(qtdTokens)
-    //console.log(lugar.toString())
   }
 
   public removeTokenDeLugar(qtdTokens: number, lugar: Lugar | null) {

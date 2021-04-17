@@ -1,6 +1,6 @@
 import { RedePetri } from './redeDePetri'
 
-console.log('Bem vindo à Rede de Petris em TypeScript! :)')
+console.log('Bem vindo à Rede de Petri em TypeScript! :)')
 
 const rede = new RedePetri()
 
@@ -91,6 +91,7 @@ while (true) {
   switch (option) {
     case '1':
       rede.executaCiclo()
+      rede.exibeRede()
       break
     case '2':
       rede.exibeLugares()
