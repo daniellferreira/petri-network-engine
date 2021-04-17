@@ -254,6 +254,8 @@ export class RedePetri {
       this.atualizaStatusTransicoes(transicoesEmbaralhadas)
     }
 
+    this.atualizaStatusTransicoes()
+
     this.registraLog(++this.numCicloExecutados)
   }
 
