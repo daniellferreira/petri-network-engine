@@ -25,6 +25,7 @@ export class Lugar {
 
   public clear() {
     this.tokens = 0
+    console.log(`Resetado todos token(s) do L${this.getId()}`)
   }
 
   public getTokens(): number {

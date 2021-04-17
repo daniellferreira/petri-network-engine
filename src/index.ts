@@ -15,6 +15,10 @@ for (let i = 1; i <= qtdLugares; i++) {
 
 const qtdTransicoes: number = Number(prompt('Quantas transições: '))
 
+const lugaresReset: string = prompt(`Quais são os lugares com reset? `)
+const lugaresComReset = lugaresReset.split(',')
+
+let reset = false
 // instancia todas as transicoes pra cada lugar
 for (let i = 1; i <= qtdTransicoes; i++) {
   const lugarEntradaTransicao: string = prompt(
