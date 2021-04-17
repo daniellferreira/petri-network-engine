@@ -17,30 +17,39 @@ const qtdTransicoes: number = Number(prompt('Quantas transições: '))
 
 // instancia todas as transicoes pra cada lugar
 for (let i = 1; i <= qtdTransicoes; i++) {
-  const lugarEntradaSaidaTransicao: string = prompt(
-    `Quais são os lugares de entrada e saída de T${i}? `
+  const lugarEntradaTransicao: string = prompt(
+    `Quais são os lugares de entrada de T${i}? `
   )
-  const lugarEntrada: number = Number(lugarEntradaSaidaTransicao.split(',')[0])
-  const lugarSaida: number = Number(lugarEntradaSaidaTransicao.split(',')[1])
+  const lugarEntrada = lugarEntradaTransicao.split(',')
 
   rede.criaTransicao(i)
+  
+  for (let entrada of lugarEntrada) {
+    rede.criaConexao(
+      rede.getLugar(Number(entrada)),
+      rede.getTransicao(i),
+      1,
+      true,
+      false,
+      false
+    ) //conecta lugar de entrada
+  }
 
-  rede.criaConexao(
-    rede.getLugar(lugarEntrada),
-    rede.getTransicao(i),
-    1,
-    true,
-    false,
-    false
-  ) //conecta lugar de entrada
-  rede.criaConexao(
-    rede.getLugar(lugarSaida),
-    rede.getTransicao(i),
-    1,
-    false,
-    false,
-    false
-  ) //conecta lugar de saida
+  const lugarSaidaTransicao: string = prompt(
+    `Quais são os lugares de saída de T${i}? `
+  )
+  const lugarSaida = lugarSaidaTransicao.split(',')
+
+  for (let saida of lugarSaida) {
+    rede.criaConexao(
+      rede.getLugar(Number(saida)),
+      rede.getTransicao(i),
+      1,
+      false,
+      false,
+      false
+    ) //conecta lugar de saida
+  }
 }
 
 // ver marcas pra cada lugar
@@ -65,6 +74,7 @@ for (let i = 0; i < conexoes.length; i++) {
   conexoes[i].setPeso(peso)
 }
 
+rede.verificaTransicoes()
 rede.registrarLogInicial()
 
 while (true) {

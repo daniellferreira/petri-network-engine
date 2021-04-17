@@ -108,6 +108,11 @@ export class RedePetri {
           ehConexaoReset
         )
       )
+      if (ehEntrada) {
+        transicao.addConexaoEntrada(this.conexoes[this.conexoes.length - 1])
+      } else {
+        transicao.addConexaoSaida(this.conexoes[this.conexoes.length - 1])
+      }
       console.log(this.conexoes[this.conexoes.length - 1].toString())
     }
   }
@@ -120,6 +125,11 @@ export class RedePetri {
       ) {
         let index = this.conexoes.indexOf(conexao)
         if (index > -1) {
+          if (conexao.getEhEntrada()) {
+            conexao.getTransicao().removeConexaoEntrada(conexao)
+          } else {
+            conexao.getTransicao().removeConexaoSaida(conexao)
+          }
           this.conexoes.splice(index, 1)
         } else {
           console.log(`removeConexao: Nao existe lugar com ID ${lugar.getId()} ou 
@@ -195,29 +205,36 @@ export class RedePetri {
 
   // ##### METODOS CICLO #####
   public verificaTransicoes() {
-    // Verifica se o local tem marcas suficiente para ser executada
-    for (let conexao of this.conexoes) {
-      // TODO: verificar se eh entrada true ou false que fica o lugar com a marcacao
-      if (conexao.getEhEntrada() == true) {
+    for (let transicao of this.transicoes) {
+      for (let conexao of transicao.getConexoesEntrada()) {
         if (conexao.getLugar().getTokens() >= conexao.getPeso()) {
           conexao.getTransicao().setStatus(true)
         } else {
           conexao.getTransicao().setStatus(false)
+          break
         }
       }
     }
   }
+
   public executaCiclo() {
     this.verificaTransicoes()
 
     // Move tokens de um lugar para o outro
-    for (let conexao of this.conexoes) {
-      if (conexao.getTransicao().getStatus() == true) {
-        if (conexao.getEhEntrada() == true) {
+    for (let transicao of this.transicoes) {
+      for (let conexao of transicao.getConexoesEntrada()) {
+        if (transicao.getStatus() == true) {
           conexao.getLugar().removeToken(conexao.getPeso())
-        } else {
+        }
+      }
+      for (let conexao of transicao.getConexoesSaida()) {
+        if (transicao.getStatus() == true) {
           conexao.getLugar().insereToken(conexao.getPeso())
         }
+      }
+
+      if (transicao.getStatus() == true) {
+        this.verificaTransicoes()
       }
     }
 
