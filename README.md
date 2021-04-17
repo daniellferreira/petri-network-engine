@@ -12,9 +12,9 @@
     </td>
     <td align="center">
       <a href="https://github.com/GiselaMD">
-        <img src="https://avatars0.githubusercontent.com/u/34191327?s=400&u=7ee1bf93250c7b802c0ec8df133b3a119a1fc254&v=4" width="100px;" alt="Gisela Miranda Difin"/>
+        <img src="https://avatars0.githubusercontent.com/u/34191327?s=400&u=7ee1bf93250c7b802c0ec8df133b3a119a1fc254&v=4" width="100px;" alt="Gisela Miranda Difini"/>
         <br />
-        <sub><b>Gisela Miranda Difin</b></sub></a>
+        <sub><b>Gisela Miranda Difini</b></sub></a>
         <br />
     </td>
     <td align="center">
