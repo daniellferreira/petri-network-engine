@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "npm run build && node dist/index.js",
     "start:dev": "ts-node-dev src/index.ts",
-    "test": "ts-node-dev test/1/index.ts"
+    "test": "ts-node-dev test/index.ts"
   },
   "author": "",
   "license": "ISC",

@@ -88,43 +88,5 @@ for (let i = 0; i < conexoes.length; i++) {
   conexoes[i].setPeso(peso)
 }
 
-rede.atualizaStatusTransicoes()
-rede.registrarLogInicial()
-
-while (true) {
-  console.log('\n=== Execução ===')
-  console.log('1. Executar ciclo')
-  console.log('2. Exibir lugares')
-  console.log('3. Exibir transições')
-  console.log('4. Exibir rede')
-  console.log('9. Sair')
-  console.log()
-
-  const option = prompt()
-
-  switch (option) {
-    case '1':
-      rede.executaCiclo()
-      rede.exibeRede()
-      break
-    case '2':
-      rede.exibeLugares()
-      break
-    case '3':
-      rede.exibeTransicoes()
-      break
-    case '4':
-      rede.exibeRede()
-      break
-    case '9':
-      console.log('Parando execução!')
-      break
-    default:
-      console.log('Opção inválida.')
-      break
-  }
-
-  if (option === '9') {
-    break
-  }
-}
+rede.init()
+rede.exibeMenu()

@@ -1,15 +1,21 @@
 import { readFileSync } from 'fs'
 import { parseStringPromise, processors } from 'xml2js'
-import prompt from 'prompt-sync'
 
-import { Lugar } from '../../src/lugar'
-import { RedePetri } from '../../src/redeDePetri'
-import { Transicao } from '../../src/transicao'
+import { Lugar } from '../src/lugar'
+import { RedePetri } from '../src/redeDePetri'
+import { Transicao } from '../src/transicao'
 
-run()
+run(process.argv[2])
 
-async function run() {
-  const xml = readFileSync(__dirname + '/file.pflow', { encoding: 'utf8' })
+async function run(filename: string) {
+  if (!filename) {
+    console.error('Parametro file_name eh obrigatorio!')
+    return
+  }
+
+  const xml = readFileSync(`${__dirname}/files/${filename}`, {
+    encoding: 'utf8',
+  })
 
   const {
     document: { subnet },
@@ -41,8 +47,6 @@ async function run() {
   }
 
   for (const arc of arcs) {
-    // arc.type -> regular
-
     let ehEntrada: boolean
     let lugar: Lugar
     let transicao: Transicao
@@ -62,50 +66,13 @@ async function run() {
       transicao,
       arc.multiplicity[0],
       ehEntrada,
-      false,
-      false
+      arc.type[0] === 'inhibitor',
+      arc.type[0] === 'reset'
     )
   }
 
-  rede.atualizaStatusTransicoes()
-  rede.registrarLogInicial()
-
-  while (true) {
-    console.log('\n=== Execução ===')
-    console.log('1. Executar ciclo')
-    console.log('2. Exibir lugares')
-    console.log('3. Exibir transições')
-    console.log('4. Exibir rede')
-    console.log('9. Sair')
-    console.log()
-
-    const option = prompt({ sigint: true })('')
-
-    switch (option) {
-      case '1':
-        rede.executaCiclo()
-        break
-      case '2':
-        rede.exibeLugares()
-        break
-      case '3':
-        rede.exibeTransicoes()
-        break
-      case '4':
-        rede.exibeRede()
-        break
-      case '9':
-        console.log('Parando execução!')
-        break
-      default:
-        console.log('Opção inválida.')
-        break
-    }
-
-    if (option === '9') {
-      break
-    }
-  }
+  rede.init()
+  rede.exibeMenu()
 }
 
 function compareValues(key: string, order = 'asc') {

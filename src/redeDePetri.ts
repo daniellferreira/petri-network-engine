@@ -1,4 +1,5 @@
 import Table from 'cli-table'
+import prompt from 'prompt-sync'
 
 import { Conexao } from './conexao'
 import { Lugar } from './lugar'
@@ -10,6 +11,11 @@ export class RedePetri {
   conexoes: Array<Conexao> = []
   log: Array<Array<string>> = []
   numCicloExecutados: number = 0
+
+  public init() {
+    this.atualizaStatusTransicoes()
+    this.registrarLogInicial()
+  }
 
   // ##### METODOS LUGAR #####
   public criaLugar(
@@ -334,5 +340,44 @@ export class RedePetri {
     const table = new Table()
     table.push(...this.log)
     console.log(table.toString())
+  }
+
+  public exibeMenu() {
+    while (true) {
+      console.log('\n=== Execução ===')
+      console.log('1. Executar ciclo')
+      console.log('2. Exibir lugares')
+      console.log('3. Exibir transições')
+      console.log('4. Exibir rede')
+      console.log('9. Sair')
+      console.log()
+
+      const option = prompt({ sigint: true })('')
+
+      switch (option) {
+        case '1':
+          this.executaCiclo()
+          break
+        case '2':
+          this.exibeLugares()
+          break
+        case '3':
+          this.exibeTransicoes()
+          break
+        case '4':
+          this.exibeRede()
+          break
+        case '9':
+          console.log('Parando execução!')
+          break
+        default:
+          console.log('Opção inválida.')
+          break
+      }
+
+      if (option === '9') {
+        break
+      }
+    }
   }
 }
