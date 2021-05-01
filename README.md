@@ -99,11 +99,11 @@ boolean isTransicaoAtiva(id: number)
 void executaCiclo() // varre toda a rede, identificando todas transições habilitadas e executando cada uma destas transições habilitadas; a movimentação de tokens e o disparo de transições podem acarretar a chamada
 de métodos de callback para a camada de visualização/interação.
 
-boolean insereCallbackTokenEntrandoLugar(lugar: Lugar, ponteiroPara Método/Função, Token token) // método da aplicação é invocado (enviando token como argumento) se um token é inserido em um lugar;
+boolean insereCallbackTokenEntrandoLugar(lugar: Lugar, ponteiroPara Método/Função, qtdTokens: number) // método da aplicação é invocado (enviando a quantidade de tokens como argumento) se um token é inserido em um lugar;
 
-boolean insereCallbackTokenSaindoLugar(lugar: Lugar, ponteiroPara Método/Função, Token token) // método da aplicação é invocado (enviando token como argumento) se token é removido de um lugar;
+boolean insereCallbackTokenSaindoLugar(lugar: Lugar, ponteiroPara Método/Função,  qtdTokens: number) // método da aplicação é invocado (enviando a quantidade de tokens como argumento) se token é removido de um lugar;
 
-boolean insereCallbackTransicao(Transicao transicao, ponteiroPara Método/Função) // método da aplicação é invocado se transição é disparada.
+boolean insereCallbackTransicao(transicao: Transicao, ponteiroPara Método/Função) // método da aplicação é invocado se transição é disparada.
 ```
 
 # Executando a Rede

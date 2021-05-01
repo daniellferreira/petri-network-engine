@@ -8,9 +8,19 @@ const prompt = require('prompt-sync')({ sigint: true })
 
 const qtdLugares: number = Number(prompt('Quantos Lugares: '))
 
+const entrouNoLugar = (qtdTokens: number) =>
+  console.log(`ENTROU NO LUGAR COM ${qtdTokens} tokens`)
+
+const saiuNoLugar = (qtdTokens: number) =>
+  console.log(`SAIU DO LUGAR COM ${qtdTokens} tokens`)
+
 // instancia todos os lugares
 for (let i = 1; i <= qtdLugares; i++) {
   rede.criaLugar(i)
+
+  const lugar = rede.getLugar(i)
+  lugar && rede.insereCallbackTokenEntrandoLugar(lugar, entrouNoLugar)
+  lugar && rede.insereCallbackTokenSaindoLugar(lugar, saiuNoLugar)
 }
 
 const qtdTransicoes: number = Number(prompt('Quantas transições: '))
@@ -34,11 +44,18 @@ for (let i = 1; i <= qtdTransicoes; i++) {
 
   rede.criaTransicao(i)
 
+  console.log(`lugaresEntrada`, lugaresEntrada)
   for (let entrada of lugaresEntrada) {
     const ehInibidora = !!lugaresConexaoInibidora.find(
       (elem) => elem === entrada
     )
     const ehReset = !!lugaresConexaoReset.find((elem) => elem === entrada)
+
+    // TODO: parar de executar o resto dos prompts se der erro
+    if (Number.isNaN(Number(entrada))) {
+      console.log('As entradas devem ser fornecidas como números inteiros')
+    }
+
     rede.criaConexao(
       rede.getLugar(Number(entrada)),
       rede.getTransicao(i),

@@ -11,6 +11,9 @@ export class RedePetri {
   conexoes: Array<Conexao> = []
   log: Array<Array<string>> = []
   numCicloExecutados: number = 0
+  callbackTokenEntrandoEmLugar: any = {}
+  callbackTokenSaindoEmLugar: any = {}
+  callbackTransicao: any = {}
 
   public init() {
     this.atualizaStatusTransicoes()
@@ -265,6 +268,7 @@ export class RedePetri {
       }
 
       for (let conexao of transicao.getConexoesEntrada()) {
+        this.executaCallbackTokenSaindo(conexao)
         if (conexao.getEhConexaoReset()) {
           conexao.getLugar().clear()
         } else {
@@ -273,6 +277,7 @@ export class RedePetri {
       }
       for (let conexao of transicao.getConexoesSaida()) {
         conexao.getLugar().insereToken(conexao.getPeso())
+        this.executaCallbackTokenEntrando(conexao)
       }
 
       this.atualizaStatusTransicoes(transicoesEmbaralhadas)
@@ -281,6 +286,49 @@ export class RedePetri {
     this.atualizaStatusTransicoes()
 
     this.registraLog(++this.numCicloExecutados)
+  }
+
+  public executaCallbackTokenEntrando(conexao: Conexao) {
+    if (
+      conexao.getLugar()?.id &&
+      this.callbackTokenEntrandoEmLugar[conexao.getLugar().id]
+    ) {
+      this.callbackTokenEntrandoEmLugar[conexao.getLugar().id](
+        conexao.getLugar().getTokens()
+      )
+    }
+  }
+
+  public executaCallbackTokenSaindo(conexao: Conexao) {
+    if (
+      conexao.getLugar()?.id &&
+      this.callbackTokenSaindoEmLugar[conexao.getLugar().id]
+    ) {
+      this.callbackTokenSaindoEmLugar[conexao.getLugar().id](
+        conexao.getLugar().getTokens()
+      )
+    }
+  }
+
+  // ##### Callbacks #####
+  // insereCallbackTokenEntrandoLugar(L3, gisela())
+  // insereCallbackTokenEntrandoLugar(L2, vitor())
+
+  // callbackTokenEntrandoEmLugar = {
+  //   L3: gisela
+  //   L2: vitor
+  // }
+
+  public insereCallbackTokenEntrandoLugar(lugar: Lugar, callback: any) {
+    this.callbackTokenEntrandoEmLugar[lugar.id] = callback
+  }
+
+  public insereCallbackTokenSaindoLugar(lugar: Lugar, callback: any) {
+    this.callbackTokenSaindoEmLugar[lugar.id] = callback
+  }
+
+  public insereCallbackTransicao(transicao: Transicao, callback: any) {
+    this.callbackTransicao[transicao.id] = callback
   }
 
   // ##### METODOS DE LOG #####

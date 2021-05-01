@@ -12,7 +12,7 @@ export class Lugar {
   public insereToken(qtdTokens: number) {
     this.tokens += qtdTokens
     // TODO: remover console.log, usado temporariamente
-    console.log(`Adicionado ${qtdTokens} token(s) do ${this.getLabel()}`)
+    console.log(`Adicionado ${qtdTokens} token(s) no ${this.getLabel()}`)
   }
 
   public removeToken(qtdTokens: number) {
