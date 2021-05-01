@@ -8,9 +8,15 @@ const prompt = require('prompt-sync')({ sigint: true })
 
 const qtdLugares: number = Number(prompt('Quantos Lugares: '))
 
+const entrouNoLugar = (qtdTokens: number) =>
+  console.log('ENTROU NO LUGAR: ', qtdTokens)
+
 // instancia todos os lugares
 for (let i = 1; i <= qtdLugares; i++) {
   rede.criaLugar(i)
+
+  const lugar = rede.getLugar(i)
+  lugar && rede.insereCallbackTokenEntrandoLugar(lugar, entrouNoLugar)
 }
 
 const qtdTransicoes: number = Number(prompt('Quantas transições: '))
@@ -34,11 +40,18 @@ for (let i = 1; i <= qtdTransicoes; i++) {
 
   rede.criaTransicao(i)
 
+  console.log(`lugaresEntrada`, lugaresEntrada)
   for (let entrada of lugaresEntrada) {
     const ehInibidora = !!lugaresConexaoInibidora.find(
       (elem) => elem === entrada
     )
     const ehReset = !!lugaresConexaoReset.find((elem) => elem === entrada)
+
+    // TODO: parar de executar o resto dos prompts se der erro
+    if (Number.isNaN(Number(entrada))) {
+      console.log('As entradas devem ser fornecidas como números inteiros')
+    }
+
     rede.criaConexao(
       rede.getLugar(Number(entrada)),
       rede.getTransicao(i),
@@ -88,5 +101,43 @@ for (let i = 0; i < conexoes.length; i++) {
   conexoes[i].setPeso(peso)
 }
 
-rede.init()
-rede.exibeMenu()
+rede.atualizaStatusTransicoes()
+rede.registrarLogInicial()
+
+while (true) {
+  console.log('\n=== Execução ===')
+  console.log('1. Executar ciclo')
+  console.log('2. Exibir lugares')
+  console.log('3. Exibir transições')
+  console.log('4. Exibir rede')
+  console.log('9. Sair')
+  console.log()
+
+  const option = prompt()
+
+  switch (option) {
+    case '1':
+      rede.executaCiclo()
+      rede.exibeRede()
+      break
+    case '2':
+      rede.exibeLugares()
+      break
+    case '3':
+      rede.exibeTransicoes()
+      break
+    case '4':
+      rede.exibeRede()
+      break
+    case '9':
+      console.log('Parando execução!')
+      break
+    default:
+      console.log('Opção inválida.')
+      break
+  }
+
+  if (option === '9') {
+    break
+  }
+}
