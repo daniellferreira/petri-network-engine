@@ -29,7 +29,7 @@ export class Lugar {
 
   public clear() {
     this.tokens = 0
-    console.log(`Resetado todos token(s) do L${this.getId()}`)
+    console.log(`Resetado todos token(s) do L${this.getLabel()}`)
   }
 
   public getTokens(): number {
