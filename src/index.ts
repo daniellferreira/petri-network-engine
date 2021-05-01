@@ -9,7 +9,10 @@ const prompt = require('prompt-sync')({ sigint: true })
 const qtdLugares: number = Number(prompt('Quantos Lugares: '))
 
 const entrouNoLugar = (qtdTokens: number) =>
-  console.log('ENTROU NO LUGAR: ', qtdTokens)
+  console.log(`ENTROU NO LUGAR COM ${qtdTokens} tokens`)
+
+const saiuNoLugar = (qtdTokens: number) =>
+  console.log(`SAIU DO LUGAR COM ${qtdTokens} tokens`)
 
 // instancia todos os lugares
 for (let i = 1; i <= qtdLugares; i++) {
@@ -17,6 +20,7 @@ for (let i = 1; i <= qtdLugares; i++) {
 
   const lugar = rede.getLugar(i)
   lugar && rede.insereCallbackTokenEntrandoLugar(lugar, entrouNoLugar)
+  lugar && rede.insereCallbackTokenSaindoLugar(lugar, saiuNoLugar)
 }
 
 const qtdTransicoes: number = Number(prompt('Quantas transições: '))

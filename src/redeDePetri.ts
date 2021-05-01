@@ -268,12 +268,12 @@ export class RedePetri {
       }
 
       for (let conexao of transicao.getConexoesEntrada()) {
+        this.executaCallbackTokenSaindo(conexao)
         if (conexao.getEhConexaoReset()) {
           conexao.getLugar().clear()
         } else {
           conexao.getLugar().removeToken(conexao.getPeso())
         }
-        this.executaCallbackTokenSaindo(conexao)
       }
       for (let conexao of transicao.getConexoesSaida()) {
         conexao.getLugar().insereToken(conexao.getPeso())
@@ -288,43 +288,22 @@ export class RedePetri {
     this.registraLog(++this.numCicloExecutados)
   }
 
-  // TODO: Verificando.
   public executaCallbackTokenEntrando(conexao: Conexao) {
     if (
       conexao.getLugar()?.id &&
       this.callbackTokenEntrandoEmLugar[conexao.getLugar().id]
     ) {
-      console.log(
-        'this.callbackTokenEntrandoEmLugar[lugar.id]',
-        this.callbackTokenEntrandoEmLugar[conexao.getLugar().id]
-      )
       this.callbackTokenEntrandoEmLugar[conexao.getLugar().id](
         conexao.getLugar().getTokens()
       )
     }
   }
 
-  // TODO: Problematico.
   public executaCallbackTokenSaindo(conexao: Conexao) {
-    console.log(this.callbackTokenSaindoEmLugar)
-
-    if (conexao.getLugar()?.id) {
-      console.log(`Id do Lugar --> ${conexao.getLugar().getId()}`)
-    }
-
-    // TODO Not entering in the if below. callbackTokenSaindoEmLugar is empty.
-    if (this.callbackTokenSaindoEmLugar[conexao.getLugar().id]) {
-      console.log('Callback saída válido!')
-    }
-
     if (
       conexao.getLugar()?.id &&
       this.callbackTokenSaindoEmLugar[conexao.getLugar().id]
     ) {
-      console.log(
-        'this.callbackTokenSaindoEmLugar[lugar.id]',
-        this.callbackTokenSaindoEmLugar[conexao.getLugar().id]
-      )
       this.callbackTokenSaindoEmLugar[conexao.getLugar().id](
         conexao.getLugar().getTokens()
       )
