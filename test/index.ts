@@ -82,8 +82,31 @@ function compareValues(key: string, order = 'asc') {
       return 0
     }
 
-    const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key]
-    const varB = typeof b[key] === 'string' ? b[key].toUpperCase() : b[key]
+    let varA = a[key]
+    if (Array.isArray(varA)) {
+      varA = varA[0]
+    }
+    if (typeof varA === 'string') {
+      varA = varA.toUpperCase()
+
+      if (hasNumbers(varA)) {
+        varA = varA.replace(/\D/g, '')
+        varA = parseInt(varA)
+      }
+    }
+
+    let varB = b[key]
+    if (Array.isArray(varB)) {
+      varB = varB[0]
+    }
+    if (typeof varB === 'string') {
+      varB = varB.toUpperCase()
+
+      if (hasNumbers(varB)) {
+        varB = varB.replace(/\D/g, '')
+        varB = parseInt(varB)
+      }
+    }
 
     let comparison = 0
     if (varA > varB) {
@@ -93,4 +116,9 @@ function compareValues(key: string, order = 'asc') {
     }
     return order === 'desc' ? comparison * -1 : comparison
   }
+}
+
+function hasNumbers(t: string) {
+  const regex = /\d/g
+  return regex.test(t)
 }

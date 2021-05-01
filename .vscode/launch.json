@@ -16,7 +16,7 @@
     {
       "name": "Debug test 1",
       "request": "launch",
-      "runtimeArgs": ["run", "test", "file.pflow"],
+      "runtimeArgs": ["run", "test", "rederefTA.pflow"],
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],
       "type": "node",
