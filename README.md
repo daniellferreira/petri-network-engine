@@ -108,13 +108,23 @@ boolean insereCallbackTransicao(transicao: Transicao, ponteiroPara Método/Funç
 
 # Executando a Rede
 
-### Opções do menu:
+## Lendo arquivo pflow
+  
+Rodar o comando:
 
-1. Executar ciclo
-2. Exibir lugares
-3. Exibir transições
-4. Exibir rede
-5. Sair
+```
+npm run test nomeArquivo.pflow
+```
+
+*Arquivos de teste devem estar na pasta /test/files*
+
+## Utilizando CLI
+  
+Rodar o comando:
+
+```
+npm run start
+```
 
 ### Perguntas iniciais:
 
@@ -143,6 +153,14 @@ boolean insereCallbackTransicao(transicao: Transicao, ponteiroPara Método/Funç
 - Qual o peso do arco de L2 para T2 ? 4
 
 - Qual o peso do arco de L3 para T2 ? 2
+
+### Opções do menu:
+
+1. Executar ciclo
+2. Exibir lugares
+3. Exibir transições
+4. Exibir rede
+5. Sair
 
 ### Comandos:
 
