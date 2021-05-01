@@ -1,5 +1,15 @@
 import { RedePetri } from './redeDePetri'
 
+// CALLBACKS
+const entrouNoLugar = (qtdTokens: number) =>
+  console.log(`ENTROU NO LUGAR COM ${qtdTokens} tokens`)
+
+const saiuNoLugar = (qtdTokens: number) =>
+  console.log(`SAIU DO LUGAR COM ${qtdTokens} tokens`)
+
+const trasicaoDisparada = () => console.log('DISPAROU TRANSIÇÃO')
+
+// INICIO DA EXECUÇÃO DA REDE
 console.log('Bem vindo à Rede de Petri em TypeScript! :)')
 
 const rede = new RedePetri()
@@ -8,19 +18,13 @@ const prompt = require('prompt-sync')({ sigint: true })
 
 const qtdLugares: number = Number(prompt('Quantos Lugares: '))
 
-const entrouNoLugar = (qtdTokens: number) =>
-  console.log(`ENTROU NO LUGAR COM ${qtdTokens} tokens`)
-
-const saiuNoLugar = (qtdTokens: number) =>
-  console.log(`SAIU DO LUGAR COM ${qtdTokens} tokens`)
-
 // instancia todos os lugares
 for (let i = 1; i <= qtdLugares; i++) {
   rede.criaLugar(i)
 
   const lugar = rede.getLugar(i)
-  lugar && rede.insereCallbackTokenEntrandoLugar(lugar, entrouNoLugar)
-  lugar && rede.insereCallbackTokenSaindoLugar(lugar, saiuNoLugar)
+  lugar && rede.insereCallbackTokenEntrandoLugar(lugar, entrouNoLugar, 2)
+  lugar && rede.insereCallbackTokenSaindoLugar(lugar, saiuNoLugar, 2)
 }
 
 const qtdTransicoes: number = Number(prompt('Quantas transições: '))
@@ -44,7 +48,9 @@ for (let i = 1; i <= qtdTransicoes; i++) {
 
   rede.criaTransicao(i)
 
-  console.log(`lugaresEntrada`, lugaresEntrada)
+  const transicao = rede.getTransicao(i)
+  transicao && rede.insereCallbackTransicao(transicao, trasicaoDisparada)
+
   for (let entrada of lugaresEntrada) {
     const ehInibidora = !!lugaresConexaoInibidora.find(
       (elem) => elem === entrada

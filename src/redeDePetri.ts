@@ -263,24 +263,25 @@ export class RedePetri {
 
     // Move tokens de um lugar para o outro
     for (let transicao of transicoesEmbaralhadas) {
-      if (!transicao.getStatus()) {
-        continue
-      }
-
-      for (let conexao of transicao.getConexoesEntrada()) {
-        this.executaCallbackTokenSaindo(conexao)
-        if (conexao.getEhConexaoReset()) {
-          conexao.getLugar().clear()
-        } else {
-          conexao.getLugar().removeToken(conexao.getPeso())
+      while (transicao.getStatus()) {
+        for (let conexao of transicao.getConexoesEntrada()) {
+          this.executaCallbackTokenSaindo(conexao)
+          if (conexao.getEhConexaoReset()) {
+            conexao.getLugar().clear()
+          } else if (!conexao.getEhConexaoInibidora()) {
+            conexao.getLugar().removeToken(conexao.getPeso())
+          }
         }
-      }
-      for (let conexao of transicao.getConexoesSaida()) {
-        conexao.getLugar().insereToken(conexao.getPeso())
-        this.executaCallbackTokenEntrando(conexao)
-      }
 
-      this.atualizaStatusTransicoes(transicoesEmbaralhadas)
+        this.executaCallbackTransicao(transicao)
+
+        for (let conexao of transicao.getConexoesSaida()) {
+          conexao.getLugar().insereToken(conexao.getPeso())
+          this.executaCallbackTokenEntrando(conexao)
+        }
+
+        this.atualizaStatusTransicoes(transicoesEmbaralhadas)
+      }
     }
 
     this.atualizaStatusTransicoes()
@@ -288,43 +289,78 @@ export class RedePetri {
     this.registraLog(++this.numCicloExecutados)
   }
 
-  public executaCallbackTokenEntrando(conexao: Conexao) {
-    if (
-      conexao.getLugar()?.id &&
-      this.callbackTokenEntrandoEmLugar[conexao.getLugar().id]
-    ) {
-      this.callbackTokenEntrandoEmLugar[conexao.getLugar().id](
-        conexao.getLugar().getTokens()
-      )
-    }
-  }
-
-  public executaCallbackTokenSaindo(conexao: Conexao) {
-    if (
-      conexao.getLugar()?.id &&
-      this.callbackTokenSaindoEmLugar[conexao.getLugar().id]
-    ) {
-      this.callbackTokenSaindoEmLugar[conexao.getLugar().id](
-        conexao.getLugar().getTokens()
-      )
-    }
-  }
-
   // ##### Callbacks #####
+  private executaCallbackTokenEntrando(conexao: Conexao) {
+    // Valida se o lugar está atrelado a um callback
+    // Verifica se a quantidade de tokens do lugar é
+    // maior ou igual a qtdMinima pra então disparar o callback
+    const idLugar = conexao.getLugar()?.id
+    if (
+      idLugar &&
+      this.callbackTokenEntrandoEmLugar[idLugar] &&
+      conexao.getLugar().getTokens() >=
+        this.callbackTokenEntrandoEmLugar[idLugar].qtdMinima
+    ) {
+      this.callbackTokenEntrandoEmLugar[idLugar].callback(
+        conexao.getLugar().getTokens()
+      )
+    }
+  }
+
+  private executaCallbackTokenSaindo(conexao: Conexao) {
+    // Valida se o lugar está atrelado a um callback
+    // Verifica se a quantidade de tokens do lugar é
+    // maior ou igual a qtdMinima pra então disparar o callback
+    const idLugar = conexao.getLugar()?.id
+    if (
+      idLugar &&
+      this.callbackTokenSaindoEmLugar[idLugar] &&
+      conexao.getLugar().getTokens() >=
+        this.callbackTokenSaindoEmLugar[idLugar].qtdMinima
+    ) {
+      this.callbackTokenSaindoEmLugar[idLugar].callback(
+        conexao.getLugar().getTokens()
+      )
+    }
+  }
+
+  private executaCallbackTransicao(transicao: Transicao) {
+    if (transicao.id && this.callbackTransicao[transicao.id]) {
+      this.callbackTransicao[transicao.id]()
+    }
+  }
+
   // insereCallbackTokenEntrandoLugar(L3, gisela())
   // insereCallbackTokenEntrandoLugar(L2, vitor())
 
   // callbackTokenEntrandoEmLugar = {
-  //   L3: gisela
+  //   L3: {
+  //      callback: gisela,
+  //      qtdMinima: 4
+  // }
   //   L2: vitor
   // }
 
-  public insereCallbackTokenEntrandoLugar(lugar: Lugar, callback: any) {
-    this.callbackTokenEntrandoEmLugar[lugar.id] = callback
+  public insereCallbackTokenEntrandoLugar(
+    lugar: Lugar,
+    callback: any,
+    qtdTokens: number
+  ) {
+    this.callbackTokenEntrandoEmLugar[lugar.id] = {
+      callback,
+      qtdMinima: qtdTokens,
+    }
   }
 
-  public insereCallbackTokenSaindoLugar(lugar: Lugar, callback: any) {
-    this.callbackTokenSaindoEmLugar[lugar.id] = callback
+  public insereCallbackTokenSaindoLugar(
+    lugar: Lugar,
+    callback: any,
+    qtdTokens: number
+  ) {
+    this.callbackTokenSaindoEmLugar[lugar.id] = {
+      callback,
+      qtdMinima: qtdTokens,
+    }
   }
 
   public insereCallbackTransicao(transicao: Transicao, callback: any) {
@@ -405,6 +441,7 @@ export class RedePetri {
       switch (option) {
         case '1':
           this.executaCiclo()
+          this.exibeRede()
           break
         case '2':
           this.exibeLugares()
