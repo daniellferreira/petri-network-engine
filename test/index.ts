@@ -7,6 +7,15 @@ import { Transicao } from '../src/transicao'
 
 run(process.argv[2])
 
+// CALLBACKS
+const entrouNoLugar = (qtdTokens: number) =>
+  console.log(`ENTROU NO LUGAR COM ${qtdTokens} tokens`)
+
+const saiuDoLugar = (qtdTokens: number) =>
+  console.log(`SAIU DO LUGAR COM ${qtdTokens} tokens`)
+
+const trasicaoDisparada = () => console.log('DISPAROU TRANSIÇÃO')
+
 async function run(filename: string) {
   if (!filename) {
     console.error('Parametro file_name eh obrigatorio!')
@@ -37,12 +46,29 @@ async function run(filename: string) {
       place.label[0],
       place.tokens[0]
     )
+
+    rede.insereCallbackTokenEntrandoLugar(
+      componentesRede[place.id[0]],
+      entrouNoLugar,
+      2
+    )
+
+    rede.insereCallbackTokenSaindoLugar(
+      componentesRede[place.id[0]],
+      saiuDoLugar,
+      2
+    )
   }
 
   for (const transition of transitions) {
     componentesRede[transition.id[0]] = rede.criaTransicao(
       transition.id[0],
       transition.label[0]
+    )
+
+    rede.insereCallbackTransicao(
+      componentesRede[transition.id[0]],
+      trasicaoDisparada
     )
   }
 

@@ -338,8 +338,6 @@ export class RedePetri {
   //      callback: gisela,
   //      qtdMinima: 4
   // }
-  //   L2: vitor
-  // }
 
   public insereCallbackTokenEntrandoLugar(
     lugar: Lugar,

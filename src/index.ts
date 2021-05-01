@@ -4,7 +4,7 @@ import { RedePetri } from './redeDePetri'
 const entrouNoLugar = (qtdTokens: number) =>
   console.log(`ENTROU NO LUGAR COM ${qtdTokens} tokens`)
 
-const saiuNoLugar = (qtdTokens: number) =>
+const saiuDoLugar = (qtdTokens: number) =>
   console.log(`SAIU DO LUGAR COM ${qtdTokens} tokens`)
 
 const trasicaoDisparada = () => console.log('DISPAROU TRANSIÇÃO')
@@ -24,7 +24,7 @@ for (let i = 1; i <= qtdLugares; i++) {
 
   const lugar = rede.getLugar(i)
   lugar && rede.insereCallbackTokenEntrandoLugar(lugar, entrouNoLugar, 2)
-  lugar && rede.insereCallbackTokenSaindoLugar(lugar, saiuNoLugar, 2)
+  lugar && rede.insereCallbackTokenSaindoLugar(lugar, saiuDoLugar, 2)
 }
 
 const qtdTransicoes: number = Number(prompt('Quantas transições: '))
